@@ -1,0 +1,19 @@
+<html lang="it">
+<head>    
+    <title>Ciclisti - Risultato della ricerca 🔍</title>
+</head>
+
+<body>
+    <h1>Posizione {{ Posizione }} nell'edizione {{ Edizione }} </h1>
+    <table> 
+        {% for ciclista in ciclisti %}
+            <tr>
+            <td >{{ ciclista["Nome"] }}</td>
+            <td >{{ ciclista["Cognome"] }}</td>
+            <td >{{ ciclista["NomeS"] }}</td>
+			</tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
