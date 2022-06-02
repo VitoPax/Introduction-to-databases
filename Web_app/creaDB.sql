@@ -1,48 +1,40 @@
-drop table CLASSIFICA_INDIVIDUALE;
-drop table TAPPA;
-drop table SQUADRA;
-drop table CICLISTA;
+SET storage_engine=InnoDB;
+SET FOREIGN_KEY_CHECKS=1;
 
-CREATE TABLE CICLISTA
-(CodC CHAR(50) NOT NULL,
-Nome  CHAR(50) NOT NULL,
-Cognome CHAR(50) NOT NULL,
-Nazionalita CHAR(50) NOT NULL,
-CodS CHAR(50) NOT NULL,
-AnnoNascita INTEGER
-CHECK(AnnoNascita >= 1900 AND AnnoNascita <= 2000),
-PRIMARY KEY(CodC)
+
+-- create database
+
+CREATE DATABASE IF NOT EXISTS Opere;
+USE Opere;
+
+
+-- drop tables if exist
+
+ DROP TABLE IF EXISTS Autore;
+ DROP TABLE IF EXISTS Opera;
+
+
+
+-- create tables
+
+SET autocommit=0;
+START TRANSACTION;
+
+CREATE TABLE Autore (
+  `codA` varchar(10) PRIMARY KEY,
+  `nome` varchar(30) NOT NULL,
+  `cognome` varchar(30) NOT NULL,
+  `anno` integer NOT NULL,
+  `citta` varchar(20) NOT NULL
 );
 
-CREATE TABLE SQUADRA
-(CodS CHAR(50) NOT NULL,
-NomeS CHAR(50) NOT NULL,
-AnnoFondazione INTEGER
-CHECK(AnnoFondazione >= 1900 AND AnnoFondazione <= 2000),
-SedeLegale CHAR(50),
-PRIMARY KEY(CodS)
- );
-
-
-CREATE TABLE TAPPA
-(Edizione INTEGER NOT NULL,
-CodT INTEGER NOT NULL,
-CittaPartenza CHAR(50) NOT NULL,
-CittaArrivo CHAR(50) NOT NULL, 
-Lunghezza INTEGER,
-Dislivello INTEGER,
-GradoDifficolta INTEGER
-CHECK(GradoDifficolta >= 1 AND GradoDifficolta <= 10),
-PRIMARY KEY(Edizione, CodT)
+CREATE TABLE Opera (
+  `codO` varchar(10) PRIMARY KEY,
+  `nome` varchar(30) NOT NULL,
+  `categoria` varchar(20) NOT NULL,
+  `citta` varchar(20) NOT NULL,
+  `nazione` varchar(20) NOT NULL,
+  `autore` varchar(10) NOT NULL REFERENCES autore(codA)
 );
 
-CREATE TABLE CLASSIFICA_INDIVIDUALE
-(CodC CHAR(50) NOT NULL,
-CodT INTEGER NOT NULL,
-Edizione INTEGER NOT NULL,
-Posizione INTEGER NOT NULL,
-PRIMARY KEY(CodC,CodT,Edizione),
-FOREIGN KEY(CodC) REFERENCES CICLISTA(CodC),
-FOREIGN KEY(CodT) REFERENCES TAPPA(CodT),
-FOREIGN KEY(Edizione) REFERENCES TAPPA(Edizione)
-);
+COMMIT;
