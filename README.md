@@ -4,7 +4,7 @@ Corso di basi di dati del Politecnico di Torino, A.A. 2021/2022
 
 
 
-Picooli promemoria:
+Piccoli promemoria:
 
-per installare flask seguire i passaggi https://flask.palletsprojects.com/en/2.1.x/installation/ creando l'ambiente virtuale nella cartella del app .py 
+per installare flask seguire i passaggi https://flask.palletsprojects.com/en/2.1.x/installation/ creando l'ambiente virtuale nella cartella dell'app .py 
 Se stai usando xmapp (simulando database in locale) allora devi installare mysqlclient (pip install mysqlclient) nella cartella venv di flask
