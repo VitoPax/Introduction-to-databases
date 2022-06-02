@@ -16,15 +16,22 @@ def find_position():
     # Connection object creation
     engine = create_engine("%s://%s:%s@%s/%s" % (dialect, username, password, host, dbname))
 
+    CodT = request.args.get('CodT')
+
     try:
 
         con = engine.connect()
 
         # QUERY SQL
         query = "SELECT CodC\
-                 FROM CICLISTA "
+                 FROM CICLISTA\
+                 WHERE CodC IN\
+                    (SELECT *\
+                     FROM CLASSIFICA_INDIVIDUALE AS CI\
+                     WHERE CodT= '%s')"%(CodT)
 
         result = con.execute(query)
+
 
         con.close()
         return render_template("form_interrogazione.html", rows=result)
@@ -44,16 +51,16 @@ def show_position():
     # Connection object creation
     engine = create_engine("%s://%s:%s@%s/%s" % (dialect, username, password, host, dbname))
 
-    CodT = request.args.get('CodT')
+
 
     try:
         con = engine.connect()
 
         # QUERY SQL
-        query = "SELECT Nome,Cognome,NomeS\
+        query = "SELECT Nome,Cognome,NomeS, CI.Edizione, CI.CodT \
                  FROM CICLISTA AS C, SQUADRA AS S, CLASSIFICA_INDIVIDUALE AS CI\
-                 WHERE C.CodS=S.CodS AND C.CodT=CI.CodT AND C.CodT= '%s' \
-                 GROUP BY "
+                 WHERE C.CodS=S.CodS AND C.CodT=CI.CodT\
+                 GROUP BY C.CodC, Nome,Cognome,NomeS, CI.Edizione, CI.CodT "
 
         ciclisti = con.execute(query)
 
@@ -63,6 +70,7 @@ def show_position():
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
     return render_template('errore.html', error_message=error)
+
 
 
 
